@@ -15,6 +15,10 @@ public class BingoCardCSV{
 
 			String line;
 			while((line = br.readLine()) != null){
+				if(line.equals("") || line.charAt(0) == '#'){
+					continue;
+				}
+
 				String[] tokens = line.split(",", 0);
 
 				int serial = Integer.parseInt(tokens[0]);	//シリアル番号取得
@@ -46,6 +50,7 @@ public class BingoCardCSV{
 			throw new IOException("CSVファイルの形式が不適切です");
 		}
 		catch(NumberFormatException e){
+			System.out.println(e.getMessage());
 			throw new IOException("CSVファイルの数値が不適切です");
 		}
 	}

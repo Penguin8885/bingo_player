@@ -27,11 +27,13 @@ public class BingoPlayerMain extends JFrame{
 		this.setBounds(200, 200, windowWidth, windowHeight);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		/* テキスト表示パネル */
 		label = new JLabel("ビンゴ番号のCSVファイルを選んでください");
 		JPanel textPanel = new JPanel();
 		textPanel.setPreferredSize(new Dimension((int)(windowWidth*0.9), (int)(windowHeight*0.35)));
 		textPanel.add(label);
 
+		/* 選択ボタン */
 		JButton button = new JButton("file select");
 		button.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
