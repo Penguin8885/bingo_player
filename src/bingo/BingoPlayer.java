@@ -208,6 +208,8 @@ public class BingoPlayer extends JFrame {
 
 	class SerialListPanel extends JPanel {
 		ArrayList<Integer> serialList = new ArrayList<Integer>();
+		String listName = null;
+		JLabel listLabel = null;
 		JLabel[] serialLabels = null;
 
 		public SerialListPanel(String listName, int width, int height, int sizeX, int sizeY){
@@ -215,7 +217,8 @@ public class BingoPlayer extends JFrame {
 			setPreferredSize(new Dimension(width, height));
 
 			/* ラベル */
-			JLabel listLabel = new JLabel(listName);
+			this.listName = listName;
+			listLabel = new JLabel(listName+" : 0");
 			listLabel.setPreferredSize(new Dimension(width, 20));
 
 			/* シリアルリスト */
@@ -256,6 +259,7 @@ public class BingoPlayer extends JFrame {
 			for(; i < serialLabels.length; i++){
 				serialLabels[i].setText("");
 			}
+			listLabel.setText(listName+" : "+serialList.size());
 		}
 	}
 }
