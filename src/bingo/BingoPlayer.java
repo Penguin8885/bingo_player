@@ -31,12 +31,12 @@ public class BingoPlayer extends JFrame {
 	HashMap<Integer, BingoCard> bcMap = null;
 
 	/* コンストラクタ */
-	public BingoPlayer(String bingoNumbersFilePath){
+	public BingoPlayer(String bingoNumbersFilePath, int serialMin, int serialMax){
 		setTitle("Bingo Player");
 		setBounds(20, 20, windowWidth, windowHeight);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		bcMap = loadBingoCardCSV(bingoNumbersFilePath); //CSV読み込み
+		bcMap = loadBingoCardCSV(bingoNumbersFilePath, serialMin, serialMax); //CSV読み込み
 
 		/* 右側 */
 		SerialListPanel bingoSerialPanel = new SerialListPanel("BINGO", (int)(mainPanelWidth*0.24), (int)(mainPanelHeight*0.79), 4, 25);
@@ -122,10 +122,10 @@ public class BingoPlayer extends JFrame {
 	}
 
 	/* CSV読み込み */
-	private HashMap<Integer, BingoCard> loadBingoCardCSV(String bingoNumbersFilePath){
+	private HashMap<Integer, BingoCard> loadBingoCardCSV(String bingoNumbersFilePath, int serialMin, int serialMax){
 		BingoCardCSV bcCSV = null;
 		try{
-			bcCSV = new BingoCardCSV(bingoNumbersFilePath);
+			bcCSV = new BingoCardCSV(bingoNumbersFilePath, serialMin, serialMax);
 		}
 		catch(Exception e){
 			JOptionPane.showMessageDialog(BingoPlayer.this, e.getMessage());

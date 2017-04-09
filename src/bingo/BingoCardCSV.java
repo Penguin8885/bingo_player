@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class BingoCardCSV{
 	HashMap<Integer, BingoCard> bcMap;
 
-	public BingoCardCSV(String filename) throws IOException{
+	public BingoCardCSV(String filename, int serialMin, int serialMax) throws IOException{
 		try{
 			bcMap = new HashMap<Integer, BingoCard>();
 			BufferedReader br = new BufferedReader(new FileReader(filename)); //Reader
@@ -22,9 +22,10 @@ public class BingoCardCSV{
 				String[] tokens = line.split(",", 0);
 
 				int serial = Integer.parseInt(tokens[0]);	//シリアル番号取得
-				int[] numbers = new int[BingoCard.CARD_SIZE];
+				if(serial < serialMin || serial > serialMax) continue;
 
 				//ビンゴカード番号取得(FreeZone削除)
+				int[] numbers = new int[BingoCard.CARD_SIZE];
 				for(int i = 0; i < BingoCard.CARD_SIZE/2; i++){
 					numbers[i] = Integer.parseInt(tokens[i + 1]);	//前半取得
 				}
@@ -41,10 +42,12 @@ public class BingoCardCSV{
 			}
 
 			br.close();
-
+			if(bcMap.size()==0){
+				throw new IOException("ファイルから範囲内の番号を読み込めませんでした");
+			}
 		}
 		catch(IOException e){
-			throw new IOException("CSVファイルを読み込めません");
+			throw new IOException("CSVファイルを読み込めません : "+ e.getMessage());
 		}
 		catch(ArrayIndexOutOfBoundsException e){
 			throw new IOException("CSVファイルの形式が不適切です");
