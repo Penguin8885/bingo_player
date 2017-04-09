@@ -50,7 +50,6 @@ public class BingoCardCSV{
 			throw new IOException("CSVファイルの形式が不適切です");
 		}
 		catch(NumberFormatException e){
-			System.out.println(e.getMessage());
 			throw new IOException("CSVファイルの数値が不適切です");
 		}
 	}
