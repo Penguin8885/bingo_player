@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class BingoPlayerMain extends JFrame{
 	private static final int windowWidth = 500;
@@ -50,15 +51,18 @@ public class BingoPlayerMain extends JFrame{
 		fileChooseButton.setPreferredSize(new Dimension(100,30));
 		fileChooseButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				JFileChooser filechooser = new JFileChooser();
-				//ここにフィルタを追加しよう
-				int selected = filechooser.showOpenDialog(BingoPlayerMain.this);
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSVファイル", "csv"));
+				fileChooser.setAcceptAllFileFilterUsed(false);
+
+				int selected = fileChooser.showOpenDialog(BingoPlayerMain.this);
 				if (selected == JFileChooser.APPROVE_OPTION){
-					csvFile = filechooser.getSelectedFile();
+					csvFile = fileChooser.getSelectedFile();
 					fileNameLabel.setText(csvFile.getName());
 				}
 			}
 		});
+
 		JPanel fileChooseButtonPanel = new JPanel();
 		fileChooseButtonPanel.setPreferredSize(new Dimension((int)(mainPanelWidth*0.45), 40));
 		fileChooseButtonPanel.add(fileChooseButton, BorderLayout.EAST);
@@ -98,6 +102,7 @@ public class BingoPlayerMain extends JFrame{
 			}
 			public void focusLost(FocusEvent e) {}
 		});
+
 		JPanel minRangePanel = new JPanel();
 		minRangePanel.setPreferredSize(new Dimension((int)(mainPanelWidth*0.90),30));
 		minRangePanel.add(minLabel, BorderLayout.WEST);
@@ -150,6 +155,7 @@ public class BingoPlayerMain extends JFrame{
 				}
 			}
 		});
+
 		JPanel nextButtonPanel = new JPanel();
 		nextButtonPanel.setPreferredSize(new Dimension((int)(mainPanelWidth*0.95),50));
 		nextButtonPanel.add(nextButton, BorderLayout.CENTER);
