@@ -39,8 +39,8 @@ public class BingoPlayer extends JFrame {
 		bcMap = loadBingoCardCSV(bingoNumbersFilePath); //CSV読み込み
 
 		/* 右側 */
-		SerialListPanel bingoSerialPanel = new SerialListPanel("BINGO", (int)(mainPanelWidth*0.3), (int)(mainPanelHeight*0.79), 4, 25);
-		SerialListPanel reachSerialPanel = new SerialListPanel("REACH", (int)(mainPanelWidth*0.3), (int)(mainPanelHeight*0.79), 4, 25);
+		SerialListPanel bingoSerialPanel = new SerialListPanel("BINGO", (int)(mainPanelWidth*0.24), (int)(mainPanelHeight*0.79), 4, 25);
+		SerialListPanel reachSerialPanel = new SerialListPanel("REACH", (int)(mainPanelWidth*0.36), (int)(mainPanelHeight*0.79), 6, 25);
 		NumberInputPanel serialInputPanel = new NumberInputPanel("シリアル検索", (int)(mainPanelWidth*0.33));
 		serialInputPanel.setActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
