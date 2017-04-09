@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -77,7 +78,7 @@ public class BingoPlayer extends JFrame {
 
 
 		/* 左側 */
-		HitNumbersPanel hitNumbersPanel = new HitNumbersPanel((int)(mainPanelWidth*0.33), (int)(mainPanelHeight*0.6));
+		HitNumbersPanel hitNumbersPanel = new HitNumbersPanel((int)(mainPanelWidth*0.33), (int)(mainPanelHeight*0.5));
 		NumberInputPanel hitNumberInputPanel = new NumberInputPanel("ビンゴ番号", (int)(mainPanelWidth*0.33));
 		hitNumberInputPanel.setActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -106,12 +107,46 @@ public class BingoPlayer extends JFrame {
 				}
 			}
 		});
+		ExtendedButtom clearButton = new ExtendedButtom("すべてクリア", (int)(mainPanelWidth*0.15),(int)(mainPanelHeight*0.15));
+		clearButton.setActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				while(numList.size() > 0){
+					int delNum = numList.get(numList.size()-1);
+					for(int serial : bcMap.keySet()){
+						bcMap.get(serial).remove(delNum);
+					}
+					hitNumbersPanel.removeHitNumber();
+					numList.remove(numList.indexOf(delNum));
+				}
+				bingoSerialPanel.update(BingoCard.BINGO);
+				reachSerialPanel.update(BingoCard.REACH);
+			}
+		});
+		ExtendedButtom undoButton = new ExtendedButtom("一つ戻る", (int)(mainPanelWidth*0.15),(int)(mainPanelHeight*0.15));
+		undoButton.setActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if(numList.size() == 0) return;
+				int delNum = numList.get(numList.size()-1);
+				for(int serial : bcMap.keySet()){
+					bcMap.get(serial).remove(delNum);
+				}
+				hitNumbersPanel.removeHitNumber();
+				numList.remove(numList.indexOf(delNum));
+				bingoSerialPanel.update(BingoCard.BINGO);
+				reachSerialPanel.update(BingoCard.REACH);
+			}
+		});
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setPreferredSize(new Dimension((int)(mainPanelWidth*0.33),(int)(mainPanelHeight*0.15)));
+		buttonPanel.add(clearButton, BorderLayout.WEST);
+		buttonPanel.add(undoButton, BorderLayout.EAST);
 
 		//左側のパネルに入れる
 		JPanel leftPanel = new JPanel();
 		leftPanel.setPreferredSize(new Dimension((int)(mainPanelWidth*0.33), mainPanelHeight));
 		leftPanel.add(hitNumberInputPanel, BorderLayout.NORTH);
-		leftPanel.add(hitNumbersPanel, BorderLayout.SOUTH);
+		leftPanel.add(hitNumbersPanel, BorderLayout.CENTER);
+		leftPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 		/* フレームに入れる */
 		JPanel mainPanel = new JPanel();
@@ -137,7 +172,7 @@ public class BingoPlayer extends JFrame {
 
 
 	class NumberInputPanel extends JPanel {
-		JFormattedTextField numberTextField;
+		private JFormattedTextField numberTextField = null;
 
 		public NumberInputPanel(String numberName, int width){
 			setPreferredSize(new Dimension(width, 40));
@@ -178,8 +213,8 @@ public class BingoPlayer extends JFrame {
 	}
 
 	class HitNumbersPanel extends JPanel {
-		JLabel[] hitNumberLabels = new JLabel[75];
-		Color[] panelColor = {Color.WHITE, Color.PINK, Color.MAGENTA, Color.YELLOW, Color.ORANGE, Color.CYAN, Color.GREEN, Color.LIGHT_GRAY};
+		private JLabel[] hitNumberLabels = new JLabel[75];
+		private Color[] panelColor = {Color.WHITE, Color.PINK, Color.MAGENTA, Color.YELLOW, Color.ORANGE, Color.CYAN, Color.GREEN, Color.LIGHT_GRAY};
 
 		public HitNumbersPanel(int width, int height){
 			setPreferredSize(new Dimension(width, height));
@@ -203,14 +238,15 @@ public class BingoPlayer extends JFrame {
 		}
 		public void removeHitNumber(){
 			hitNumberLabels[numList.size()-1].setText("");
+			hitNumberLabels[numList.size()-1].setOpaque(false);
 		}
 	}
 
 	class SerialListPanel extends JPanel {
-		ArrayList<Integer> serialList = new ArrayList<Integer>();
-		String listName = null;
-		JLabel listLabel = null;
-		JLabel[] serialLabels = null;
+		private ArrayList<Integer> serialList = new ArrayList<Integer>();
+		private String listName = null;
+		private JLabel listLabel = null;
+		private JLabel[] serialLabels = null;
 
 		public SerialListPanel(String listName, int width, int height, int sizeX, int sizeY){
 			serialLabels = new JLabel[sizeX*sizeY];
@@ -260,6 +296,21 @@ public class BingoPlayer extends JFrame {
 				serialLabels[i].setText("");
 			}
 			listLabel.setText(listName+" : "+serialList.size());
+		}
+	}
+
+	class ExtendedButtom extends JPanel {
+		private JButton button = null;
+
+		public ExtendedButtom(String name, int width, int height){
+			setPreferredSize(new Dimension(width, height));
+			button = new JButton(name);
+			button.setPreferredSize(new Dimension(150,30));
+			add(button, BorderLayout.CENTER);
+		}
+
+		public void setActionListener(ActionListener actionListener){
+			button.addActionListener(actionListener);
 		}
 	}
 }

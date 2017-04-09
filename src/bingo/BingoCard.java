@@ -54,15 +54,30 @@ public class BingoCard{
 		for(int i = 0; i < CARD_SIZE; i++){
 			if(numbers[i] == num){
 				hit[i] = true;
-				updataState();
+				updataState(1);
+				return;
+			}
+		}
+	}
+	/* 数字を削除 */
+	public void remove(int num){
+		if(isOutOfRangeInNum(num)){
+			System.err.println("入力値が異常");
+			System.exit(1);
+		}
+		for(int i = 0; i < CARD_SIZE; i++){
+			if(numbers[i] == num){
+				hit[i] = false;
+				updataState(-1);
 				return;
 			}
 		}
 	}
 
 	/* 状態を更新 */
-	private void updataState(){
-		if(state == BINGO) return;
+	private void updataState(int todoNum){
+		if(todoNum == 1 && state == BINGO) return;
+		if(todoNum == -1) state = NONE;
 
 		/* 各行の穴が空いた数から現状態を求める */
 		for(int i = 0; i < 12; i++){
