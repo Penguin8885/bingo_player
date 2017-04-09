@@ -179,6 +179,7 @@ public class BingoPlayer extends JFrame {
 
 	class HitNumbersPanel extends JPanel {
 		JLabel[] hitNumberLabels = new JLabel[75];
+		Color[] panelColor = {Color.WHITE, Color.PINK, Color.MAGENTA, Color.YELLOW, Color.ORANGE, Color.CYAN, Color.GREEN, Color.LIGHT_GRAY};
 
 		public HitNumbersPanel(int width, int height){
 			setPreferredSize(new Dimension(width, height));
@@ -197,6 +198,8 @@ public class BingoPlayer extends JFrame {
 
 		public void addHitNumber(int num){
 			hitNumberLabels[numList.size()-1].setText(Integer.toString(num));
+			hitNumberLabels[numList.size()-1].setBackground(panelColor[num/10]);
+			hitNumberLabels[numList.size()-1].setOpaque(true);
 		}
 		public void removeHitNumber(){
 			hitNumberLabels[numList.size()-1].setText("");
